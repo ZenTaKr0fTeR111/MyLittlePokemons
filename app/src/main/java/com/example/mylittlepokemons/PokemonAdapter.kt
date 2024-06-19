@@ -7,7 +7,7 @@ import com.example.mylittlepokemons.data.Pokemon
 import com.example.mylittlepokemons.databinding.PokemonListItemBinding
 
 class PokemonAdapter(
-    private var pokemonList: List<Pokemon>, val onItemClicked: (Int) -> Unit
+    private var pokemonList: Map<Int, Pokemon>, val onItemClicked: (Int) -> Unit
 ) : RecyclerView.Adapter<PokemonAdapter.PokemonVewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PokemonVewHolder {
         val viewHolder = PokemonVewHolder(
@@ -17,17 +17,20 @@ class PokemonAdapter(
     }
 
     override fun onBindViewHolder(holder: PokemonVewHolder, position: Int) {
-        holder.bind(position)
+        holder.bind(position+1)
     }
 
     override fun getItemCount() = pokemonList.size
 
     inner class PokemonVewHolder(private var binding: PokemonListItemBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(p: Int) {
-            val pokemon = pokemonList[p]
-            binding.itemName.text = pokemon.name
-            itemView.setOnClickListener {
-                onItemClicked(p+1)
+        fun bind(pokemonID: Int) {
+            val pokemon = pokemonList[pokemonID]
+            pokemon?.let {
+                binding.itemName.text = it.name
+                binding.itemImage.setImageResource(it.spriteRes)
+                itemView.setOnClickListener {
+                    onItemClicked(pokemonID)
+                }
             }
         }
     }
