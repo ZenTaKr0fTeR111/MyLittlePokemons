@@ -1,9 +1,12 @@
 package com.example.mylittlepokemons
 
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.UnderlineSpan
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.example.mylittlepokemons.data.Pokemon
 import com.example.mylittlepokemons.data.listOfPokemons
 import com.example.mylittlepokemons.databinding.ActivityDetailsBinding
 import com.google.android.material.snackbar.Snackbar
@@ -19,28 +22,37 @@ class DetailsActivity : AppCompatActivity() {
         val actionBar = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val pokemon_id = intent.getIntExtra("pokemon_id", -1)
-        val pokemon = listOfPokemons.find { pokemon_id == it.id }
+        val pokemonID = intent.getIntExtra(Pokemon.POKEMON_ID_KEY, -1)
+        val pokemon = listOfPokemons[pokemonID]
 
-        if (pokemon == null) {
-            binding.weight.isVisible = false
-            binding.height.isVisible = false
-            Snackbar.make(binding.root, "No pokemon with such id exists", Snackbar.LENGTH_INDEFINITE).apply {
-                setAction("Ok") {
-                    dismiss()
-                    finish()
+        with(binding) {
+            pokemon?.let {
+                val pokName = it.name
+                pokemonName.text = SpannableString(pokName).also { it.setSpan(UnderlineSpan(), 0, pokName.length, 0) }
+                heightValue.text = it.height.toString()
+                weightValue.text = it.weight.toString()
+                pokemonImage.setImageResource(it.spriteRes)
+
+                hpValue.text = it.stats[Pokemon.HP_KEY].toString()
+                attackValue.text = it.stats[Pokemon.ATTACK_KEY].toString()
+                defenseValue.text = it.stats[Pokemon.DEFENSE_KEY].toString()
+                specialAttackValue.text = it.stats[Pokemon.SPEC_ATTACK_KEY].toString()
+                specialDefenseValue.text = it.stats[Pokemon.SPEC_DEFENSE_KEY].toString()
+                speedValue.text = it.stats[Pokemon.SPEED_KEY].toString()
+            } ?: run {
+                weight.isVisible = false
+                height.isVisible = false
+                Snackbar.make(
+                    root, "No pokemon with such id exists", Snackbar.LENGTH_INDEFINITE
+                ).apply {
+                    setAction("Ok") {
+                        dismiss()
+                        finish()
+                    }
+                    show()
                 }
-                show()
-            }
-        } else {
-            binding.apply {
-                pokemonName.text = pokemon.name
-                heightValue.text = pokemon.height.toString()
-                weightValue.text = pokemon.weight.toString()
-                pokemonImage.setImageResource(pokemon.sprite)
             }
         }
-
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

@@ -11,7 +11,7 @@
         android:id="@+id/pokemon_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="@+id/pokemon_name"
         app:layout_constraintTop_toBottomOf="@+id/pokemon_name"
         tools:src="@drawable/_1" />
@@ -71,18 +71,17 @@
         android:id="@+id/stats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="@string/stats"
         android:textSize="28sp"
-        app:layout_constraintStart_toStartOf="@+id/pokemon_image"
-        app:layout_constraintTop_toBottomOf="@+id/pokemon_image" />
+        app:layout_constraintBottom_toBottomOf="@+id/pokemon_name"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/pokemon_name" />
 
     <TextView
         android:id="@+id/hp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="@string/health"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/stats"
@@ -197,5 +196,13 @@
         app:layout_constraintStart_toEndOf="@+id/speed"
         app:layout_constraintTop_toTopOf="@+id/speed"
         tools:text="99" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
