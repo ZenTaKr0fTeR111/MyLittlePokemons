@@ -11,4 +11,8 @@
         <item name="titleTextColor">@color/black</item>
         <item name="android:textColor">@color/black</item>
     </style>
+
+    <style name="SpecialItems" parent="Theme.MyLittlePokemons">
+        <item name="android:background">@color/special_item</item>
+    </style>
 </resources>

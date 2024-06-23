@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
 import com.example.mylittlepokemons.data.Pokemon
 import com.example.mylittlepokemons.data.listOfPokemons
@@ -32,6 +34,7 @@ class DetailsActivity : AppCompatActivity() {
                 heightValue.text = it.height.toString()
                 weightValue.text = it.weight.toString()
                 pokemonImage.setImageResource(it.spriteRes)
+                typesValues.text = it.types.joinToString()
 
                 hpValue.text = it.stats[Pokemon.HP_KEY].toString()
                 attackValue.text = it.stats[Pokemon.ATTACK_KEY].toString()
@@ -39,6 +42,12 @@ class DetailsActivity : AppCompatActivity() {
                 specialAttackValue.text = it.stats[Pokemon.SPEC_ATTACK_KEY].toString()
                 specialDefenseValue.text = it.stats[Pokemon.SPEC_DEFENSE_KEY].toString()
                 speedValue.text = it.stats[Pokemon.SPEED_KEY].toString()
+
+                if (it.isSpecial()) {
+                    specialImage?.visibility = View.VISIBLE
+                    specialImage?.setImageResource(it.getSpecialImageByType())
+                    root.background = AppCompatResources.getDrawable(this@DetailsActivity, R.color.special_item)
+                }
             } ?: run {
                 weight.isVisible = false
                 height.isVisible = false
