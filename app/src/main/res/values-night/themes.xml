@@ -10,4 +10,7 @@
         <item name="titleTextColor">@color/dark_yellow</item>
         <item name="android:textColor">@color/yellow</item>
     </style>
+    <style name="SpecialItems" parent="Theme.MyLittlePokemons">
+        <item name="android:background">@color/special_item</item>
+    </style>
 </resources>
