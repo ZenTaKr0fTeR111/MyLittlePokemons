@@ -15,12 +15,17 @@ class PokemonAdapter(
     private var pokemonList = mapOf<Int, Pokemon>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
-        1 -> {
+        ViewType.SPECIAL_VIEW.ordinal -> {
             val viewHolder = PokemonSpecialViewHolder(
-                PokemonListItemSpecialBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                PokemonListItemSpecialBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
             )
             viewHolder
         }
+
         else -> {
             val viewHolder = PokemonStandardViewHolder(
                 PokemonListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -30,14 +35,14 @@ class PokemonAdapter(
     }
 
     override fun onBindViewHolder(holder: PokemonViewHolder, position: Int) {
-        holder.bind(position+1)
+        holder.bind(position + 1)
     }
 
     override fun getItemCount() = pokemonList.size
 
     override fun getItemViewType(position: Int) = when {
-        pokemonList[position+1]!!.isSpecial() -> 1
-        else -> 0
+        pokemonList[position + 1]!!.isSpecial() -> ViewType.SPECIAL_VIEW.ordinal
+        else -> ViewType.STANDARD_VIEW.ordinal
     }
 
     fun submitItems(newList: Map<Int, Pokemon>) {
@@ -53,9 +58,16 @@ class PokemonAdapter(
 
         override fun getNewListSize() = newList.size
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) = oldList[oldItemPosition+1]?.id == newList[newItemPosition+1]?.id
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+            oldList[oldItemPosition + 1]?.id == newList[newItemPosition + 1]?.id
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) = oldList[oldItemPosition+1] == newList[newItemPosition+1]
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int) =
+            oldList[oldItemPosition + 1] == newList[newItemPosition + 1]
+    }
+
+    enum class ViewType {
+        STANDARD_VIEW,
+        SPECIAL_VIEW,
     }
 
     //////////////////////// HOLDERS ///////////////////////
@@ -64,7 +76,8 @@ class PokemonAdapter(
         abstract fun bind(pokemonID: Int)
     }
 
-    inner class PokemonStandardViewHolder(private var binding: PokemonListItemBinding) : PokemonViewHolder(binding) {
+    inner class PokemonStandardViewHolder(private var binding: PokemonListItemBinding) :
+        PokemonViewHolder(binding) {
         override fun bind(pokemonID: Int) {
             val pokemon = pokemonList[pokemonID]
             pokemon?.let {
@@ -76,7 +89,9 @@ class PokemonAdapter(
             }
         }
     }
-    inner class PokemonSpecialViewHolder(private var binding: PokemonListItemSpecialBinding) : PokemonViewHolder(binding) {
+
+    inner class PokemonSpecialViewHolder(private var binding: PokemonListItemSpecialBinding) :
+        PokemonViewHolder(binding) {
         override fun bind(pokemonID: Int) {
             val pokemon = pokemonList[pokemonID]
             pokemon?.let {

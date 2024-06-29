@@ -30,7 +30,14 @@ class DetailsActivity : AppCompatActivity() {
         with(binding) {
             pokemon?.let {
                 val pokName = it.name
-                pokemonName.text = SpannableString(pokName).also { it.setSpan(UnderlineSpan(), 0, pokName.length, 0) }
+                pokemonName.text = SpannableString(pokName).also {
+                    it.setSpan(
+                        UnderlineSpan(),
+                        0,
+                        pokName.length,
+                        0
+                    )
+                }
                 heightValue.text = it.height.toString()
                 weightValue.text = it.weight.toString()
                 pokemonImage.setImageResource(it.spriteRes)
@@ -46,7 +53,8 @@ class DetailsActivity : AppCompatActivity() {
                 if (it.isSpecial()) {
                     specialImage?.visibility = View.VISIBLE
                     specialImage?.setImageResource(it.getSpecialImageByType())
-                    root.background = AppCompatResources.getDrawable(this@DetailsActivity, R.color.special_item)
+                    root.background =
+                        AppCompatResources.getDrawable(this@DetailsActivity, R.color.special_item)
                 }
             } ?: run {
                 weight.isVisible = false

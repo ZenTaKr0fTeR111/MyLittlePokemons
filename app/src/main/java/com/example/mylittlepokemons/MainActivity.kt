@@ -30,7 +30,12 @@ class MainActivity : AppCompatActivity() {
             it.layoutManager = LinearLayoutManager(this)
             it.addItemDecoration(
                 DividerItemDecoration(this, LinearLayoutManager.VERTICAL).apply {
-                    setDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.divider)!!)
+                    setDrawable(
+                        AppCompatResources.getDrawable(
+                            this@MainActivity,
+                            R.drawable.divider
+                        )!!
+                    )
                 }
             )
         }
