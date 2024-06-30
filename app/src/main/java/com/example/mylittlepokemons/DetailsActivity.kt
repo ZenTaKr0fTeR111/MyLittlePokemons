@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.UnderlineSpan
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.isVisible
@@ -29,33 +28,9 @@ class DetailsActivity : AppCompatActivity() {
 
         with(binding) {
             pokemon?.let {
-                val pokName = it.name
-                pokemonName.text = SpannableString(pokName).also {
-                    it.setSpan(
-                        UnderlineSpan(),
-                        0,
-                        pokName.length,
-                        0
-                    )
-                }
-                heightValue.text = it.height.toString()
-                weightValue.text = it.weight.toString()
-                pokemonImage.setImageResource(it.spriteRes)
-                typesValues.text = it.types.joinToString()
-
-                hpValue.text = it.stats[Pokemon.HP_KEY].toString()
-                attackValue.text = it.stats[Pokemon.ATTACK_KEY].toString()
-                defenseValue.text = it.stats[Pokemon.DEFENSE_KEY].toString()
-                specialAttackValue.text = it.stats[Pokemon.SPEC_ATTACK_KEY].toString()
-                specialDefenseValue.text = it.stats[Pokemon.SPEC_DEFENSE_KEY].toString()
-                speedValue.text = it.stats[Pokemon.SPEED_KEY].toString()
-
-                if (it.isSpecial()) {
-                    specialImage?.visibility = View.VISIBLE
-                    specialImage?.setImageResource(it.getSpecialImageByType())
-                    root.background =
-                        AppCompatResources.getDrawable(this@DetailsActivity, R.color.special_item)
-                }
+                setupSpecs(it)
+                setupStats(it)
+                setupSpecial(it)
             } ?: run {
                 weight.isVisible = false
                 height.isVisible = false
@@ -69,6 +44,44 @@ class DetailsActivity : AppCompatActivity() {
                     show()
                 }
             }
+        }
+    }
+
+    private fun setupSpecs(p: Pokemon) = binding.apply {
+        val pokName = p.name
+        pokemonName.text = SpannableString(pokName).also {
+            it.setSpan(
+                UnderlineSpan(),
+                0,
+                pokName.length,
+                0
+            )
+        }
+        heightValue.text = p.height.toString()
+        weightValue.text = p.weight.toString()
+        pokemonImage.setImageResource(p.spriteRes)
+        typesValues.text = p.types.joinToString()
+    }
+
+    private fun setupStats(p: Pokemon) = binding.apply {
+        hpValue.text = p.stats[Pokemon.HP_KEY].toString()
+        attackValue.text = p.stats[Pokemon.ATTACK_KEY].toString()
+        defenseValue.text = p.stats[Pokemon.DEFENSE_KEY].toString()
+        specialAttackValue.text = p.stats[Pokemon.SPEC_ATTACK_KEY].toString()
+        specialDefenseValue.text = p.stats[Pokemon.SPEC_DEFENSE_KEY].toString()
+        speedValue.text = p.stats[Pokemon.SPEED_KEY].toString()
+    }
+
+    private fun setupSpecial(p: Pokemon) = binding.apply {
+        if (p.isSpecial()) {
+            specialImage?.isVisible = true
+            specialImage?.setImageResource(p.getSpecialImageByType())
+            root.background =
+                AppCompatResources.getDrawable(this@DetailsActivity, R.color.special_item)
+        } else {
+            specialImage?.isVisible = false
+            root.background =
+                AppCompatResources.getDrawable(this@DetailsActivity, R.color.regular_item)
         }
     }
 
