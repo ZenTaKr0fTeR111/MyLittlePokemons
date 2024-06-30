@@ -7,8 +7,9 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mylittlepokemons.data.Pokemon
-import com.example.mylittlepokemons.data.listOfPokemons
+import com.example.mylittlepokemons.data.getPokemonsAsList
 import com.example.mylittlepokemons.databinding.ActivityMainBinding
+import com.example.mylittlepokemons.recycler.PokemonAdapter
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -18,22 +19,19 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val pokemonAdapter = PokemonAdapter { position ->
+        val pokemonAdapter = PokemonAdapter { id ->
             val intent = Intent(this, DetailsActivity::class.java)
-            val bundle = Bundle()
-            bundle.putInt(Pokemon.POKEMON_ID_KEY, position)
-            intent.putExtras(bundle)
+            intent.putExtra(Pokemon.POKEMON_ID_KEY, id)
             startActivity(intent)
         }
-        binding.pokemonList.let {
-            it.adapter = pokemonAdapter
-            it.layoutManager = LinearLayoutManager(this)
-            it.addItemDecoration(
-                DividerItemDecoration(this, LinearLayoutManager.VERTICAL).apply {
-                    setDrawable(AppCompatResources.getDrawable(this@MainActivity, R.drawable.divider)!!)
+        binding.pokemonList.adapter = pokemonAdapter
+        binding.pokemonList.addItemDecoration(
+            DividerItemDecoration(this, LinearLayoutManager.VERTICAL).apply {
+                AppCompatResources.getDrawable(this@MainActivity, R.drawable.divider)?.let {
+                    setDrawable(it)
                 }
-            )
-        }
-        pokemonAdapter.submitItems(listOfPokemons)
+            }
+        )
+        pokemonAdapter.submitItems(getPokemonsAsList())
     }
 }

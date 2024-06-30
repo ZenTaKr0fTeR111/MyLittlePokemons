@@ -6,4 +6,5 @@
     <color name="red">#FF1500</color>
     <color name="dark_yellow">#BFAA08</color>
     <color name="special_item">#FFFEDB</color>
+    <color name="regular_item">@color/white</color>
 </resources>
